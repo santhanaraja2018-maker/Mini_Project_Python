@@ -1,5 +1,6 @@
 from User import User
 from UserManager import UserManger
+from MainMenu import MainMenu
 
 class LoginSystem:
 
@@ -11,7 +12,9 @@ class LoginSystem:
 
         if user is not None:
             print("You have successfully logged in")
-            pass  #next step code here
+            menu = MainMenu()
+            menu.Start()
+
         else:
             print("Invalid username or password")
 
@@ -35,30 +38,36 @@ class LoginSystem:
 
     def validate_options(self,option):
 
-        if option == 1:
-            self.login()
+        # if option == 1:
+        #     self.login()
             
-        elif option == 2:
-            self.register()
+        # elif option == 2:
+        #     self.register()
 
-        elif option == 3:
-            self.guest_login()
+        # elif option == 3:
+        #     self.guest_login()
 
-        elif option == 4:
-            self.exit_app()
+        # elif option == 4:
+        #     self.exit_app()
 
-        else :
-            print("You have entered invalid input")
+        # else :
+        #     print("You have entered invalid input")  
+
+        # instead of if else we can use getattr by passing the value intead of choice
+
+        getattr(self,option)()
+
+        # here we use () to indicate methos if no () then it checks for variable
 
 
 
 
 class FoodApp:
 
-    login_options = { 1:"Login",
-                      2: "Register", 
-                      3 : "Guest", 
-                      4 : "Exit" }
+    login_options = { 1:"login",
+                      2: "register", 
+                      3 : "guest_login", 
+                      4 : "exit_app" }
 
     @staticmethod
     def init():
@@ -72,8 +81,17 @@ class FoodApp:
                 
             try:
                 choice = int(input("\n Please Enter Your Choice : "))
-                loginsystem.validate_options(choice)
+                loginsystem.validate_options(FoodApp.login_options[choice])   # if we use if else
+
+
+                # alternate method
+                # for getattr () we store choice in option and pass it to our method login options
+                # option = FoodApp.login_options.get(choice)
+                # if option:
+                #     loginsystem.validate_options(option)
+                # else:
+                #     print("Please enter valid Option")
                 
-            except ValueError:
-                print("Please enter valid choice")
+            except (ValueError,KeyError):
+                print("Invalid Input... Please enter valid choice")
         
