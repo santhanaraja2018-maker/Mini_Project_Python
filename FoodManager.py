@@ -6,6 +6,7 @@ class FoodManager:
 
     def __init__(self):
         self.Restaurants = self.__PrepareRestaurants()
+        self.FoodItems = self.__PrepareFoodItems()
         
 
 
@@ -38,13 +39,13 @@ class FoodManager:
         FoodMenus = self.__PrepareFoodMenus()
 
         res1 = Restaurant (name= "A2B",rating= 4.8, location= "Chennai", offer= 10)
-        res1.FoodMenus=[FoodMenus[0]]
+        res1.FoodMenus=self.__PrepareFoodMenus()
 
         res2 = Restaurant (name= "KFC",rating= 4.5, location= "Madurai", offer= 20)
-        res2.FoodMenus=[FoodMenus[2]]
+        res2.FoodMenus=self.__PrepareFoodMenus()
 
         res3 = Restaurant (name= "Adyar Aananda Bhavan",rating= 4.2, location= "Adyar", offer= 15)
-        res3.FoodMenus=[FoodMenus[1]]
+        res3.FoodMenus=self.__PrepareFoodMenus()
 
         return [res1,res2,res3]
     
@@ -52,3 +53,10 @@ class FoodManager:
         for res in self.Restaurants:
             if res.Name.casefold() == name:
                 return res
+            
+
+    def FindFood(self,name):
+        for food in self.FoodItems:
+            if food.Name.casefold()==name:
+                return food
+

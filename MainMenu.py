@@ -16,9 +16,10 @@ class MainMenu:
         for res in self.__FoodManager.Restaurants:
             print (f">> {res.Name} => Rating : {res.Rating}")
 
-        name= input("Please Select Restaurant ").strip().casefold()
+        name= input("\nPlease Select Restaurant : ").strip().casefold()
         res = self.__FoodManager.FindRestaurant(name)
         if res is not None:
+            print("\nThank You for choosing ",name.upper())
             self.ShowFoodMenus(res.FoodMenus)
         else:
             print("Restaurant not found")
@@ -26,12 +27,6 @@ class MainMenu:
 
 
     def ShowFoodItems (self, foodItems = None):
-        
-        if isinstance(foodItems, list) and foodItems and isinstance(foodItems[0], FoodMenu):
-            items = []
-            for menu in foodItems:
-                items.extend(menu.FoodItems)
-                foodItems = items
 
         if foodItems is None:
             foodItems = []
@@ -45,8 +40,8 @@ class MainMenu:
             return
         
         print("\n Available Food Items \n")
-        for index,item in enumerate(foodItems,start=1):
-            print(f"{index}. {item.Name} | "
+        for i,item in enumerate(foodItems,start=1):
+            print(f"{i}. {item.Name} | "
                   f"Rating :{item.Rating} | "
                   f"Price : {item.Price} | "
                   f"Description : {item.Description}"
@@ -61,6 +56,7 @@ class MainMenu:
         res= self.__FoodManager.FindRestaurant(resName)
 
         if res is not None:
+            print("\nRestaurant Found, Happy Ordering \n")
             print(f"Name : {res.Name}, Rating : {res.Rating}")
             self.ShowFoodMenus(res.FoodMenus)
 
@@ -68,14 +64,54 @@ class MainMenu:
             print(f"No Restaurant found on the name {resName}")
 
     def SearchFoodItems (self):
-        pass
+
+        while True:
+            food = input("\nEnter food you like or enter 0 to go back : ").strip().casefold()
+
+            if food != "0":
+                results = self.__FoodManager.FindFood(food)
+
+                if results:
+                    print("\nYour food is here\n")
+                    print(f"Name : {results.Name} | Price: {results.Price} | Rating : {results.Rating}")
+
+                else :
+                    print(f"No food found on the name {food}")
+            else :
+                break
+
+
 
     def ShowFoodMenus(self, menus):
-        if menus is not None:
-            self.ShowFoodItems(menus)
-        
-        else:
+
+        if not menus:
             print("No Food Avilable in this Restaurant")
+            return
+        
+        while True:
+            
+            print("Avilable Food Menus \n" )
+            for i,menu in enumerate(menus,1):
+                print(f"{i}. {menu.Name}")
+
+            try:
+                print("\n To search other restaurants enter 0 \n")
+                choice = int(input("Please Choose Menu : "))
+
+                if choice ==0:
+                    break
+
+                if (choice>0 and choice<=len(menus)):
+                    fooditems = menus[choice-1].FoodItems
+                    print("\n To search other restaurants enter 0 \n")
+                    self.ShowFoodItems(fooditems)
+
+                else:
+                    print ("\nPlease enter valid Choice\n")
+
+            except ValueError:
+                print("\n Please enter number only\n")
+            
 
     def logout(self):
         print("Thanks for visiting our Online Food Ordering System ")
@@ -85,6 +121,7 @@ class MainMenu:
     def Start(self):
 
         while True:
+            print()
             for key,value in MainMenu.__Options.items():
                 print (f"{key}.{value}", end="  ")
 

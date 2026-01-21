@@ -1,6 +1,7 @@
 from User import User
 from UserManager import UserManger
 from MainMenu import MainMenu
+import re
 
 class LoginSystem:
 
@@ -20,17 +21,41 @@ class LoginSystem:
 
 
     def register(self):
-        name = input("Enter Name : ")
-        mobile = int(input("Enter Mobile Number : "))
-        mailid = input("Enter your mail id : ")
-        password = input("Enter Your PassWord : ")
+
+        while True:
+            name = input("Enter Name : ").strip()
+            if name and name.replace(" ","").isalpha():
+                break
+            print("\nInvalid Name. Please enter characters only")
+
+        while True:
+            mobile = input("Enter Mobile Number : ")
+            if mobile.isdigit() and len(mobile) ==10:
+                mobile =int(mobile)
+                break
+            print("\nInvalid Mobile Number. Please enter 10 digit numbers only")
+
+        while True:
+            mailid = input("Enter your mail id : ")
+            if re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", mailid):
+                break
+            print("Invalid email format.")
+
+        while True:
+            password = input("Enter Your PassWord : ")
+            if len(password)>=6:
+                break
+            print("\nPassword must be atleast 6 characters")
 
         userObj = User(name= name, phone= mobile, mail= mailid, password= password)
         UserManger.add_user(userObj)
+        print("\nRegistration successful ✅\n")
 
 
     def guest_login(self):
-        pass
+        print("\n You have logged in as Guest .. Sign in for ordering\n")
+        menu=MainMenu()
+        menu.Start()
 
     def exit_app(self):
         print("Thanks for visiting our Online Food Ordering System ")
@@ -71,9 +96,11 @@ class FoodApp:
 
     @staticmethod
     def init():
-        print ("Welcome to Online Food ordering System")
+        print ("********************Welcome to Online Food ordering System***********************")
         # creating object
         loginsystem = LoginSystem()
+        # menu = MainMenu()
+        # menu.Start()
 
         while True:   #until user exit the app the program should run 
             for key,value in FoodApp.login_options.items():
