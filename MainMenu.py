@@ -13,16 +13,26 @@ class MainMenu:
     def ShowRestaurants (self):
 
         print("\n Available Restaurants \n")
-        for res in self.__FoodManager.Restaurants:
-            print (f">> {res.Name} => Rating : {res.Rating}")
+        restaurants = self.__FoodManager.Restaurants
+        for i,res in enumerate (restaurants,start=1):
+            print (f"{i}. {res.Name} => Rating : {res.Rating}")
 
-        name= input("\nPlease Select Restaurant : ").strip().casefold()
-        res = self.__FoodManager.FindRestaurant(name)
-        if res is not None:
-            print("\nThank You for choosing ",name.upper())
+        choice= input("\nPlease Select Restaurant or enter 0 to go back : ").strip()
+        if choice == "0":
+            self.Start()
+            return
+        if not choice.isdigit():
+            print("Please Enter valid choice (number)")
+            self.ShowRestaurants()
+            return
+        choice = int(choice)
+        if (1<=choice<=len(restaurants)):
+            res = restaurants[choice - 1]
+            print("\nThank You for choosing ",res.Name.upper())
             self.ShowFoodMenus(res.FoodMenus)
         else:
             print("Restaurant not found")
+            self.ShowRestaurants()
 
 
 

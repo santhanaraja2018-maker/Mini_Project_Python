@@ -89,8 +89,8 @@ class LoginSystem:
 
 class FoodApp:
 
-    login_options = { 1:"login",
-                      2: "register", 
+    login_options = { 1 :"login",
+                      2 : "register", 
                       3 : "guest_login", 
                       4 : "exit_app" }
 
